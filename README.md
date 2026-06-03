@@ -1,12 +1,16 @@
-# HR Policy Chatbot
+# Customer Support Q&A Portal
 
 This is the sample project for the Agentic Engineer course.
 
-Students will use this repository to build an HR policy Q&A application end to end with an AI coding agent. The finished app will have a Python backend, a Next.js frontend, simple markdown document loading, and grounded answers with policy source attribution.
+Students will use this repository to build a customer support Q&A application end to end with an AI coding agent. The finished app will have a Python backend, a TypeScript frontend, simple markdown document loading, and grounded answers with policy source attribution.
 
 The repository starts intentionally small. The first source of truth is the project brief:
 
 - [docs/projectbrief.md](docs/projectbrief.md)
+
+For course demos and filming, use the starter prompts in:
+
+- [docs/prompt-cheatsheet.md](docs/prompt-cheatsheet.md)
 
 ## Project Shape
 
@@ -19,7 +23,11 @@ The course builds this project in stages:
 - test and review the result
 - deploy the finished app
 
-The AI feature is deliberately simple: load a small set of markdown HR policy documents and ask the model to answer only from those documents. This is not a vector database or production RAG project.
+The AI feature is deliberately simple: load a small set of markdown customer support policy documents and ask the model to answer only from those documents. This is not a vector database or production RAG project.
+
+The starter policy documents live in:
+
+- [docs/policies](docs/policies)
 
 ## Getting Started
 
