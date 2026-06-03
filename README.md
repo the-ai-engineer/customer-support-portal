@@ -38,8 +38,8 @@ Those documents are part of the teaching setup. Students should not need to inve
 ## Getting Started
 
 ```bash
-git clone https://github.com/the-ai-engineer/hr-policy-chatbot.git
-cd hr-policy-chatbot
+git clone https://github.com/the-ai-engineer/customer-support-portal.git
+cd customer-support-portal
 ```
 
 Start by reading `docs/projectbrief.md`. Do not assume the application structure yet; the course will create it through the agentic engineering workflow.
