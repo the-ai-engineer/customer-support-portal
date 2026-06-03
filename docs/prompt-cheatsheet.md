@@ -1,36 +1,36 @@
 # Agentic Engineer Prompt Cheat Sheet
 
-Use these prompts to kick off the Customer Support Q&A Portal project on camera.
+Use these prompts to drive the Customer Support Portal project on camera.
 
-The fictional product name is Northstar Support. It answers customer questions for an e-commerce store using the policy documents in `docs/policies/`.
+The fictional product is **Northstar Support**. It answers customer questions for an e-commerce store using the policy documents in `docs/policies/`.
 
-They are written for Codex, but the workflow transfers to other coding agents. The important pattern is:
+The prompts are written for Codex, but the workflow transfers to any coding agent. Each one follows the same shape — outcome first, then grounding, then what "done" looks like, then the boundaries:
 
 ```text
-context -> decision -> plan -> implementation -> verification -> review
+goal -> grounding -> done when -> boundaries
 ```
 
-Do not use every prompt in one session. Pick the prompt that matches the lesson moment.
+That shape is deliberate. We tell the agent the destination and what proof we need, and let it choose the path, instead of dictating every step.
+
+Many of these are also packaged as Blueprint skills — `$spec`, `$plan`, `$implement`, `$tdd`, `$review`, `$commit`, `$branch`, `$browser-verify`. The prompt is what's inside the skill. Before lesson 6 we type the prompt; after it, we invoke the skill. The steps without a skill stay raw prompts.
+
+Don't use every prompt in one session. Pick the one that matches the lesson moment.
 
 ## 1. First Repo Inspection
 
-Use this at the start of the project, before asking for code.
+Use this at the start, before asking for any code.
 
 ```text
-Read this repository and tell me what you inspected.
+Read this repository and tell me what you looked at.
 
-Focus on:
-- the project brief
-- the policy documents
-- the current file structure
-- what exists already
-- what does not exist yet
-- the likely next engineering step
+Goal: a grounded picture of where the project stands, so the next engineering step is obvious.
 
-Do not write code yet. I want a grounded summary based on files in the repo.
+Cover the project brief, the policy documents, the current structure, what already exists, and what doesn't yet.
+
+Base it on the files you actually read — name them. Don't write code yet.
 ```
 
-Filming point: show that the agent must inspect files before it can make a useful plan.
+Filming point: the agent has to inspect files before it can make a useful plan.
 
 ## 2. Turn The Brief Into Requirements
 
@@ -39,86 +39,61 @@ Use this when teaching the difference between a brief and buildable requirements
 ```text
 Read docs/projectbrief.md and turn it into a clear requirements summary.
 
-Separate:
-- user goals
-- functional requirements
-- non-functional requirements
-- non-goals
-- open questions
-- risks or decisions we need to make before implementation
+Goal: separate what the product must do from how we'll build it, so we can review the decisions before any code.
 
-Do not change files yet.
+Pull out user goals, functional requirements, non-functional requirements, non-goals, open questions, and the decisions we need to make before implementation.
+
+Ground it in the brief. Flag anything the brief leaves unclear instead of guessing. Don't change files yet.
 ```
 
-Filming point: the agent can help structure fuzzy product context, but the human still approves the decisions.
+Filming point: the agent can structure fuzzy product context, but the human still approves the decisions.
 
 ## 3. Draft The Implementation Spec
 
-Use this when introducing spec-driven development.
+Use this when introducing spec-driven development. Skill: `$spec`.
 
 ```text
-Write an implementation spec for the first version of this project.
+Write the V1 implementation spec, grounded in docs/projectbrief.md.
 
-Use docs/projectbrief.md as the source of truth.
+Goal: a spec a fresh agent could build from without guessing the decisions that matter.
 
-The spec should cover:
-- product behaviour
-- frontend shape
-- backend API shape
-- policy document format and location
-- model/prompt contract
-- error, unsupported-question, and off-topic behaviour
-- testing strategy
-- deployment assumptions
-- explicit non-goals
+Cover the decisions that change the build: product behavior, the frontend and backend API shapes, the model/prompt contract, where policy documents live, and the behavior for errors, unsupported questions, and off-topic questions. Note how we'll verify it and what's out of scope.
 
-Save it as docs/spec.md.
+Ground every decision in the brief. If a decision isn't in the brief and would change the build, ask instead of inventing it.
 
-Do not implement the app yet.
+Save it as docs/spec.md. Don't write application code yet.
 ```
 
 Filming point: the spec is a review checkpoint before code starts.
 
 ## 4. Review The Spec Like A Human Owner
 
-Use this after the spec exists.
+Use this once the spec exists. Skill: `$review`.
 
 ```text
 Review docs/spec.md against docs/projectbrief.md.
 
-Look for:
-- missing requirements
-- invented scope
-- vague behaviour
-- risky assumptions
-- unclear API contracts
-- test gaps
-- anything that would confuse an implementation agent
+Goal: catch the problems now, while they're cheap to fix in a document.
 
-Return findings first, then suggest specific edits.
-Do not change files yet.
+Look for missing requirements, invented scope, vague behavior, risky assumptions, unclear API contracts, and test gaps — anything that would make an implementation agent guess.
+
+Give me the findings first, ordered by how much they'd hurt, then suggest specific edits. Don't change files yet.
 ```
 
 Filming point: review is part of the workflow, not something saved for the end.
 
 ## 5. Break The Spec Into Agent-Sized Tasks
 
-Use this before opening GitHub Issues or starting implementation.
+Use this before opening GitHub Issues or starting implementation. Skill: `$plan`.
 
 ```text
-Read docs/projectbrief.md and docs/spec.md.
+Read docs/projectbrief.md and docs/spec.md, then break the project into small implementation tasks.
 
-Break the project into small implementation tasks that can each be built, tested, reviewed, and merged independently.
+Goal: tasks small enough that each can be built, tested, reviewed, and merged on its own in one focused session.
 
-For each task include:
-- title
-- goal
-- files or areas likely touched
-- acceptance criteria
-- suggested verification
-- dependencies on other tasks
+For each task give a title, the goal, the files or areas it likely touches, acceptance criteria, how to verify it, and what it depends on.
 
-Keep tasks small enough for one focused agent session.
+Order them so dependencies come first. Don't start implementation.
 ```
 
 Filming point: this is where the course moves from "build an app" to controllable units of work.
@@ -128,148 +103,116 @@ Filming point: this is where the course moves from "build an app" to controllabl
 Use this when teaching context engineering.
 
 ```text
-Create an AGENTS.md file for this repository.
+Create an AGENTS.md for this repository.
 
-It should give future agents durable project guidance:
-- project goal
-- source of truth documents
-- policy document location
-- expected stack
-- workflow expectations
-- testing and verification expectations
-- scope boundaries and non-goals
-- security reminders around API keys
+Goal: durable guidance a future agent can rely on without re-reading the whole brief each time.
 
-Keep it concise. Do not duplicate the entire project brief.
+Include the project goal, the source-of-truth documents, where policy docs live, the expected stack, workflow and verification expectations, scope boundaries and non-goals, and a reminder to keep the API key server-side.
+
+Keep it concise — point at the brief, don't copy it.
 ```
 
 Filming point: durable context belongs in the repo, not only in a chat message.
 
 ## 7. Start The First Implementation Task
 
-Use this once a task has been chosen.
+Use this once a task is chosen. Skill: `$implement`.
 
 ```text
-Implement the first task: set up the project skeleton for the Customer Support Q&A Portal.
+Implement the first task: set up the project skeleton, grounded in the spec.
 
-Before editing, inspect the repo and explain the structure you are going to create.
+Goal: a runnable skeleton for the customer support portal — Python backend, TypeScript frontend, markdown policy docs in docs/policies — and nothing more.
 
-Constraints:
-- Python backend
-- TypeScript frontend
-- simple markdown policy documents in docs/policies
-- no embeddings or vector database
-- no live order lookup or account-specific actions
-- keep the change focused on project setup
-- include basic commands in the README if needed
+Before editing, inspect the repo and tell me the structure you'll create.
 
-After implementation, run the relevant checks and report what changed.
+Done when the skeleton is in place and the basic run commands are in the README. Keep it to setup — no retrieval, no model calls, no deployment yet. Run the relevant checks and report what changed.
 ```
 
 Filming point: one task, one branch-sized change, one verification loop.
 
 ## 8. Build The Backend Document Loader
 
-Use this for the first meaningful backend feature.
+Use this for the first meaningful backend feature. Skill: `$implement` (or `$tdd` for test-first).
 
 ```text
 Implement the backend document-loading path.
 
-The backend should load markdown customer support policy documents from disk and expose that logic through a small, testable module.
+Goal: a small, testable module that loads the markdown policy documents from disk.
 
-Acceptance criteria:
-- policy files have a predictable location
-- exactly the provided policy files are loaded
-- loader returns document name and content
-- empty or missing document directories are handled deliberately
-- tests cover the loader behaviour
-- no model API call is required for this task
+Done when:
+- the policy files have a predictable location
+- it loads exactly the provided files and returns each document's name and content
+- missing or empty directories are handled deliberately
+- tests cover that behavior
 
-Keep the change focused.
+No model call is needed for this task. Keep the change focused.
 ```
 
 Filming point: useful tests start before the AI integration.
 
 ## 9. Build The Answer API With A Mockable Model Boundary
 
-Use this when connecting product behaviour to backend architecture.
+Use this when connecting product behavior to backend architecture. Skill: `$tdd`.
 
 ```text
-Implement the backend question-answer API.
+Implement the question-answer API in the backend.
 
-Use the policy document loader and create a model boundary that can be mocked in tests.
+Goal: an endpoint that answers from the policy documents, with the model call behind a boundary a test can replace with a fake.
 
-The API should accept a question and return:
-- answer
-- sources
-- status for answered, unsupported, or off-topic
+Done when:
+- it returns { answer, sources, status } where status is answered / unsupported / off-topic
+- tests cover all three cases using the fake model boundary
+- the API key never reaches the frontend
 
-Do not expose API keys to the frontend.
-Add tests for the API behaviour using a fake model response.
+Keep the change to the API and its tests.
 ```
 
-Filming point: keep model calls behind a boundary so the app is testable.
+Filming point: keep model calls behind a boundary so the app stays testable.
 
 ## 10. Build The Frontend Flow
 
-Use this for the main user-facing screen.
+Use this for the main user-facing screen. Skill: `$implement`, then `$browser-verify`.
 
 ```text
-Build the TypeScript frontend for the Customer Support Q&A Portal.
+Build the TypeScript frontend for the customer support portal.
 
-The page should include:
-- a polished e-commerce support interface
-- question input
-- example prompts
-- answer display
-- source display
-- loading state
-- error state
-- unsupported and off-topic states
+Goal: the support page that is the product — not a wrapper around the API.
 
-Match the project brief. Do not make a marketing landing page.
-Run the relevant frontend checks and, if possible, verify the flow in a browser.
+Match the brief. The page needs a question input, example prompts, the answer and its sources, and clear loading, error, unsupported, and off-topic states.
+
+Done when the main question-to-answer flow works in the browser. Run the frontend checks and verify the flow in a browser if you can. Don't build a marketing landing page.
 ```
 
 Filming point: the UI should become the product, not a wrapper around a demo API.
 
 ## 11. Ask For A Review Before Merging
 
-Use this after a meaningful change.
+Use this after a meaningful change. Skill: `$review`.
 
 ```text
 Review the current diff like a senior engineer.
 
-Prioritise:
-- correctness
-- scope creep
-- missing tests
-- broken contracts
-- security issues
-- confusing code or docs
+Goal: decide whether this is safe to merge, with reasons.
 
-Findings first, ordered by severity.
-If there are no findings, say that and identify any remaining risks.
+Prioritize correctness, scope creep, missing tests, broken contracts, and security.
+
+Findings first, ordered by severity, each tied to a file or behavior. If there's nothing to fix, say so and name the risks that remain. Don't change code yet.
 ```
 
 Filming point: the agent can help review, but the human still owns the merge decision.
 
 ## 12. Prepare A Pull Request
 
-Use this when teaching GitHub workflow.
+Use this when teaching the GitHub workflow.
 
 ```text
-Summarise the current branch for a pull request.
+Summarize this branch for a pull request.
 
-Include:
-- what changed
-- why it changed
-- how it was tested
-- screenshots or browser checks if relevant
-- known limitations
-- follow-up tasks
+Goal: a PR a reviewer can understand without reading every line.
 
-Keep it concise and useful for review.
+Include what changed, why, how it was tested, browser checks or screenshots if relevant, known limitations, and any follow-ups.
+
+Keep it concise. Don't open the PR yet.
 ```
 
 Filming point: the PR is a communication artifact, not just a code container.
@@ -279,53 +222,42 @@ Filming point: the PR is a communication artifact, not just a code container.
 Use this before deploying.
 
 ```text
-Create a deployment plan for this app.
+Write a deployment plan for this app. Save it as docs/deployment.md.
 
-Cover:
-- frontend hosting
-- backend hosting
-- environment variables and secrets
-- build commands
-- health checks
-- smoke test steps
-- rollback plan
-- logs to inspect if something fails
+Goal: a plan someone else could follow to deploy the app and recover it if it breaks.
 
-Do not deploy yet. Save the plan as docs/deployment.md.
+Cover frontend hosting, backend hosting, environment variables and secrets, build commands, health checks, smoke-test steps, the rollback plan, and which logs to read when something fails.
+
+Don't deploy yet.
 ```
 
 Filming point: deployment is planned and verified like any other engineering task.
 
 ## 14. Live Verification
 
-Use this after deployment.
+Use this after deployment. Skill: `$browser-verify`.
 
 ```text
-Verify the deployed Customer Support Q&A Portal.
+Verify the deployed customer support portal.
 
-Check:
-- the frontend loads
-- the question flow works
-- answers show sources
-- unsupported questions behave correctly
-- off-topic questions are refused
-- no secrets are exposed in browser code or logs
-- backend logs look healthy
+Goal: confirm the live system works for a real user, not just that it deployed.
 
-Report the live URL, checks performed, and any issues found.
+Check that the frontend loads, the question flow works, answers show their sources, unsupported and off-topic questions behave, no secrets appear in browser code or logs, and the backend logs look healthy.
+
+Report the live URL, what you checked, and anything that's off.
 ```
 
 Filming point: "deployed" only counts after the live system is checked.
 
 ## Good Prompt Habits To Call Out
 
-- Ask the agent what it inspected.
-- Tell it when not to write code yet.
+- Lead with the goal and what "done" looks like, not a list of steps.
 - Name the source-of-truth files.
 - Put boundaries and non-goals in the prompt.
-- Ask for acceptance criteria and verification.
+- Reserve "never" and "must" for real invariants, like keeping secrets server-side.
+- Ask the agent what it inspected.
+- Tell it when not to write code yet.
 - Keep each implementation prompt to one task.
-- Review the diff before committing.
 - Prefer tests, browser checks, logs, and live smoke tests over vibes.
 
 ## Short Opening Prompt
@@ -333,5 +265,5 @@ Filming point: "deployed" only counts after the live system is checked.
 Use this when you want the smallest possible on-camera start.
 
 ```text
-Read this repository, especially docs/projectbrief.md, and tell me the next sensible step for building this project through the Agentic Engineer workflow. Do not edit files yet.
+Read this repository, especially docs/projectbrief.md, and tell me the next sensible step for building this through the Agentic Engineer workflow. Don't edit files yet.
 ```
