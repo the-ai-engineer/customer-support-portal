@@ -2,6 +2,8 @@
 
 Use these prompts to kick off the Customer Support Q&A Portal project on camera.
 
+The fictional product name is Northstar Support. It answers customer questions for an e-commerce store using the policy documents in `docs/policies/`.
+
 They are written for Codex, but the workflow transfers to other coding agents. The important pattern is:
 
 ```text
@@ -19,6 +21,7 @@ Read this repository and tell me what you inspected.
 
 Focus on:
 - the project brief
+- the policy documents
 - the current file structure
 - what exists already
 - what does not exist yet
@@ -130,6 +133,7 @@ Create an AGENTS.md file for this repository.
 It should give future agents durable project guidance:
 - project goal
 - source of truth documents
+- policy document location
 - expected stack
 - workflow expectations
 - testing and verification expectations
@@ -155,6 +159,7 @@ Constraints:
 - TypeScript frontend
 - simple markdown policy documents in docs/policies
 - no embeddings or vector database
+- no live order lookup or account-specific actions
 - keep the change focused on project setup
 - include basic commands in the README if needed
 
@@ -174,6 +179,7 @@ The backend should load markdown customer support policy documents from disk and
 
 Acceptance criteria:
 - policy files have a predictable location
+- exactly the provided policy files are loaded
 - loader returns document name and content
 - empty or missing document directories are handled deliberately
 - tests cover the loader behaviour

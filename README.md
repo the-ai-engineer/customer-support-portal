@@ -2,7 +2,11 @@
 
 This is the sample project for the Agentic Engineer course.
 
-Students will use this repository to build a customer support Q&A application end to end with an AI coding agent. The finished app will have a Python backend, a TypeScript frontend, simple markdown document loading, and grounded answers with policy source attribution.
+Students will use this repository to build a customer support Q&A application end to end with an AI coding agent.
+
+The fictional product is **Northstar Support**, a support portal for an e-commerce store called Northstar Outfitters. Customers ask questions about refunds, shipping, warranties, accounts, and privacy. The app answers only from the provided policy documents and shows which documents it used.
+
+The finished app will have a Python backend, a TypeScript frontend, simple markdown document loading, and grounded answers with policy source attribution.
 
 The repository starts intentionally small. The first source of truth is the project brief:
 
@@ -29,6 +33,8 @@ The starter policy documents live in:
 
 - [docs/policies](docs/policies)
 
+Those documents are part of the teaching setup. Students should not need to invent fake data before they can start building.
+
 ## Getting Started
 
 ```bash
@@ -37,3 +43,9 @@ cd hr-policy-chatbot
 ```
 
 Start by reading `docs/projectbrief.md`. Do not assume the application structure yet; the course will create it through the agentic engineering workflow.
+
+Useful first prompts:
+
+- Ask the agent to inspect the repo and summarize what exists.
+- Ask the agent to turn `docs/projectbrief.md` into requirements.
+- Ask the agent to draft an implementation spec before writing code.
