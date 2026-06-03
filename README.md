@@ -12,6 +12,8 @@ The repository starts intentionally small. The first source of truth is the proj
 
 - [docs/projectbrief.md](docs/projectbrief.md)
 
+The brief is written as customer context, not a technical spec. The course workflow turns that brief into requirements, an implementation spec, tickets, code, tests, review, and deployment.
+
 For course demos and filming, use the starter prompts in:
 
 - [docs/prompt-cheatsheet.md](docs/prompt-cheatsheet.md)
